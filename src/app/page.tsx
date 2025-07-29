@@ -1,8 +1,17 @@
+import Toolbar from "@/app/components/Toolbar";
+import ComponentLibrary from "@/app/components/ComponentLibrary";
+import Canvas from "@/app/components/Canvas";
+import PropertyPanel from "@/app/components/PropertyPanel";
+
 export default function Home() {
   return (
-      <div
-          className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-          <h1>Hello, GitHub Actions!</h1>
+      <div className={"h-screen bg-gray-100"}>
+          <Toolbar/>
+          <div className={"flex"}>
+              <ComponentLibrary/>
+              <Canvas />
+              <PropertyPanel/>
+          </div>
       </div>
   );
 }
