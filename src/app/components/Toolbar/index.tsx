@@ -2,10 +2,10 @@ import {Button} from "antd";
 import {EyeOutlined} from "@ant-design/icons";
 
 export default function Toolbar() {
-    return <div className={"h-20 flex bg-white"}>
+    return <div className={"h-20 flex bg-white select-none"}>
         <img src={"images/logo.svg"} className={"w-10 h-10 ml-4 my-auto"} alt={"logo"}/>
         <div className={"text-4xl leading-20 ml-2 font-comic font-bold text-main-blue"}>Low Code Editor</div>
-        <div className="leading-20 ml-2 text-gray-400 italic mt-2">
+        <div className="leading-20 ml-2 text-gray-400 italic mt-2 select-none">
             start design by dragging components
         </div>
 
