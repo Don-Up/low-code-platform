@@ -1,4 +1,9 @@
+"use client"
 import React from "react";
+import {useAppDispatch} from "@/store/hooks";
+import {addComponent} from "@/store/componentSlice";
+import {TextPropCompDefaultProp} from "@/app/components/Canvas/components/Text/TextPropCompProp";
+import {nanoid} from "nanoid";
 
 
 interface GridCellProps {
@@ -9,10 +14,14 @@ interface GridCellProps {
 
 const GridCell: React.FC<GridCellProps> = ({bgColor, img, text}) => {
 
-
+    const dispatch = useAppDispatch()
     const divClass = `w-20 h-20 rounded-[20px] ${bgColor}`
 
-    return (<div className="flex flex-col items-center justify-center p-4 hover:bg-gray-100">
+    function handleClick() {
+        dispatch(addComponent({...TextPropCompDefaultProp, id: nanoid(8)}))
+    }
+
+    return (<div className="flex flex-col items-center justify-center p-4 hover:bg-gray-100" onClick={handleClick}>
         <div
             className={divClass}
         >
