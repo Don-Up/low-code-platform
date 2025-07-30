@@ -1,7 +1,7 @@
 import {CompType} from "@/app/components/Canvas/components/type";
 
 export type TextPropCompProp = {
-    id?: string | null;
+    id: string;
     type?: CompType;
 
     text?: string;
@@ -11,6 +11,7 @@ export type TextPropCompProp = {
 }
 
 export const TextPropCompDefaultProp: TextPropCompProp = {
+    id: "",
     text: "Default Text",
     level: 3,
     isCenter: false,
