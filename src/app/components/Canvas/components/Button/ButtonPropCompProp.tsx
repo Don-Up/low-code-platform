@@ -1,7 +1,7 @@
 import {CompType} from "@/app/components/Canvas/components/type";
 
 export type ButtonPropCompProp = {
-    id?: string | null;
+    id: string;
     type?: CompType;
 
     text?: string;
@@ -10,6 +10,7 @@ export type ButtonPropCompProp = {
 }
 
 export const ButtonPropCompDefaultProp: ButtonPropCompProp = {
+    id: "",
     type: "button",
     text: "Button",
     width: 150,

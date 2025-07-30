@@ -1,7 +1,7 @@
 import {CompType} from "@/app/components/Canvas/components/type";
 
 export type ImagePropCompProp = {
-    id?: string | null;
+    id: string;
     type?: CompType;
 
     src?: string;
@@ -10,6 +10,7 @@ export type ImagePropCompProp = {
 }
 
 export const ImagePropCompDefaultProp: ImagePropCompProp = {
+    id: "",
     type: "image",
     src: "/images/image.svg",
     width: 200,

@@ -34,8 +34,16 @@ const compSlice = createSlice({
         setSelectComponentId: (state: ComponentState, action: PayloadAction<string | null>) => {
             state.selectedComponentId = action.payload;
         },
+        swapComponent : (state: ComponentState, action: PayloadAction<{oldIndex: number, newIndex: number}>) => {
+            const {oldIndex, newIndex} = action.payload;
+            [state.components[oldIndex], state.components[newIndex]] = [state.components[newIndex], state.components[oldIndex]];
+        },
+        removeComponent: (state: ComponentState, action: PayloadAction<string>) => {
+            state.components = state.components.filter((c) => c.id !== action.payload);
+            state.selectedComponentId = null;
+        },
     },
 });
 
-export const { setComponents, addComponent, clearComponents, setSelectComponentId, updateComponent } = compSlice.actions;
+export const { setComponents, addComponent, clearComponents, setSelectComponentId, updateComponent, swapComponent, removeComponent } = compSlice.actions;
 export default compSlice.reducer;
