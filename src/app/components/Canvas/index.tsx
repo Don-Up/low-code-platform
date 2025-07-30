@@ -18,7 +18,7 @@ export default function Canvas() {
     }, []);
 
     const dispatch = useAppDispatch();
-    const components = useAppSelector((state) => state.comp.components);
+    const components = useAppSelector((state) => state.comp.present.components);
 
     function getComp(comp: Comp) {
         switch (comp.type) {
