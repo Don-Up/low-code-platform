@@ -4,6 +4,10 @@ import {Comp} from "@/app/components/Canvas/components/type";
 import TextComp from "@/app/components/Canvas/components/Text";
 import {useEffect, useRef} from "react";
 import {clearComponents} from "@/store/componentSlice";
+import ImageComp from "@/app/components/Canvas/components/Image";
+import ButtonComp from "@/app/components/Canvas/components/Button";
+import InputComp from "@/app/components/Canvas/components/Input";
+import CardComp from "@/app/components/Canvas/components/Card";
 
 export default function Canvas() {
 
@@ -15,8 +19,17 @@ export default function Canvas() {
     const components = useAppSelector((state) => state.comp.components);
 
     function getComp(comp: Comp) {
-        if (comp.type === "text") {
-            return <TextComp {...comp}/>
+        switch (comp.type) {
+            case "text":
+                return <TextComp {...comp}/>
+            case "image":
+                return <ImageComp {...comp}/>
+            case "button":
+                return <ButtonComp {...comp}/>
+            case "input":
+                return <InputComp  {...comp}/>
+            case "card":
+                return <CardComp {...comp}/>
         }
         return <div>null</div>
     }
