@@ -13,7 +13,7 @@ import {Button} from "antd";
 export default function PropertyPanel() {
 
     const dispatch = useAppDispatch();
-    const {selectedComponentId, components} = useAppSelector((state) => state.comp);
+    const {selectedComponentId, components} = useAppSelector((state) => state.comp.present);
 
     if (selectedComponentId === null) {
         return <div className={"flex-1 p-4 bg-white h-[calc(100vh-96px)] mx-2 my-2 round"}>

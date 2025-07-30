@@ -2,13 +2,26 @@ import { configureStore } from "@reduxjs/toolkit";
 import componentSlice from "./componentSlice";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage
+import undoable, { includeAction } from "redux-undo";
 
 const persistConfig = {
     key: "root",
     storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, componentSlice);
+const undoableReducer = undoable(componentSlice, {
+    filter: includeAction([
+        "comp/setComponents",
+        "comp/addComponent",
+        "comp/updateComponent",
+        "comp/clearComponents",
+        "comp/swapComponent",
+        "comp/removeComponent",
+    ]),
+    limit: 30,
+});
+
+const persistedReducer = persistReducer(persistConfig, undoableReducer);
 
 export const store = configureStore({
     reducer: {
