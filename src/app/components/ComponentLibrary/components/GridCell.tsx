@@ -4,6 +4,11 @@ import {useAppDispatch} from "@/store/hooks";
 import {addComponent} from "@/store/componentSlice";
 import {TextPropCompDefaultProp} from "@/app/components/Canvas/components/Text/TextPropCompProp";
 import {nanoid} from "nanoid";
+import {ImagePropCompDefaultProp} from "@/app/components/Canvas/components/Image/ImagePropCompProp";
+import {ButtonPropCompDefaultProp} from "@/app/components/Canvas/components/Button/ButtonPropCompProp";
+import Input from "@/app/components/Canvas/components/Input";
+import {InputPropCompDefaultProp} from "@/app/components/Canvas/components/Input/InputPropCompProp";
+import {CardPropCompDefaultProp} from "@/app/components/Canvas/components/Card/CardPropCompProp";
 
 
 interface GridCellProps {
@@ -18,7 +23,23 @@ const GridCell: React.FC<GridCellProps> = ({bgColor, img, text}) => {
     const divClass = `w-20 h-20 rounded-[20px] ${bgColor}`
 
     function handleClick() {
-        dispatch(addComponent({...TextPropCompDefaultProp, id: nanoid(8)}))
+        switch (text) {
+            case "Text":
+                dispatch(addComponent({...TextPropCompDefaultProp, id: nanoid(8)}))
+                break;
+            case "Image":
+                dispatch(addComponent({...ImagePropCompDefaultProp, id: nanoid(8)}))
+                break;
+            case "Button":
+                dispatch(addComponent({...ButtonPropCompDefaultProp, id: nanoid(8)}))
+                break;
+            case "Input":
+                dispatch(addComponent({...InputPropCompDefaultProp, id: nanoid(8)}))
+                break;
+            case "Card":
+                dispatch(addComponent({...CardPropCompDefaultProp, id: nanoid(8)}))
+                break
+        }
     }
 
     return (<div className="flex flex-col items-center justify-center p-4 hover:bg-gray-100" onClick={handleClick}>
