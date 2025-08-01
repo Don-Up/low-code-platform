@@ -25,7 +25,7 @@ export default function PropertyPanel() {
     const selectedComponent = components.find((component) => component.id === selectedComponentId);
 
 
-    function handleCompChange(values: TextPropCompProp) {
+    function handleCompChange(values: Comp) {
         dispatch(updateComponent({...selectedComponent, ...values}))
     }
 
