@@ -3,7 +3,6 @@
 import React, {useEffect} from "react";
 import {Form, Input, InputNumber} from "antd";
 import {ImagePropCompProp} from "./ImagePropCompProp";
-import {useAppDispatch} from "@/store/hooks";
 
 type OnImageChange = {
     onChange: (values: ImagePropCompProp) => void;
@@ -17,7 +16,6 @@ const ImagePropComp: React.FC<ImagePropCompProp & OnImageChange> = ({
                                                                         disabled,
                                                                         onChange,
                                                                     }) => {
-    const dispatch = useAppDispatch();
     const [form] = Form.useForm();
 
     useEffect(() => {
@@ -39,19 +37,21 @@ const ImagePropComp: React.FC<ImagePropCompProp & OnImageChange> = ({
             initialValues={{src, width, height}}
             disabled={disabled}
         >
-            <Form.Item
-                label="Image URL"
-                name="src"
-                rules={[{required: true, message: "Please enter an image URL."}]}
-            >
-                <Input placeholder="Enter image URL"/>
-            </Form.Item>
-            <Form.Item label="Width" name="width">
-                <InputNumber min={0} placeholder="Enter width" style={{width: "100%"}}/>
-            </Form.Item>
-            <Form.Item label="Height" name="height">
-                <InputNumber min={0} placeholder="Enter height" style={{width: "100%"}}/>
-            </Form.Item>
+            <div className={"mt-6"}>
+                <Form.Item
+                    label="Image URL"
+                    name="src"
+                    rules={[{required: true, message: "Please enter an image URL."}]}
+                >
+                    <Input placeholder="Enter image URL"/>
+                </Form.Item>
+                <Form.Item label="Width" name="width">
+                    <InputNumber min={0} placeholder="Enter width" style={{width: "100%"}}/>
+                </Form.Item>
+                <Form.Item label="Height" name="height">
+                    <InputNumber min={0} placeholder="Enter height" style={{width: "100%"}}/>
+                </Form.Item>
+            </div>
         </Form>
     );
 };

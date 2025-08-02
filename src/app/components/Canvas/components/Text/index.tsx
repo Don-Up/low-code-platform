@@ -1,32 +1,43 @@
-"use client"
+"use client";
+
 import React from "react";
-import {TextPropCompProp} from "@/app/components/Canvas/components/Text/TextPropCompProp";
-import {Typography} from "antd";
-import {useAppDispatch} from "@/store/hooks";
-import {setSelectComponentId} from "@/store/componentSlice";
+import { Typography } from "antd";
+import { useAppDispatch } from "@/store/hooks";
+import { setSelectComponentId } from "@/store/componentSlice";
+import { TextPropCompProp } from "./TextPropCompProp";
 
-const {Text} = Typography
+const { Text } = Typography;
 
-const TextComp: React.FC<TextPropCompProp> = ({text, level = 3, isCenter , id = null}) => {
+const TextComp: React.FC<TextPropCompProp> = ({
+                                                  text,
+                                                  color,
+                                                  fontSize,
+                                                  textAlign,
+                                                  fontWeight,
+                                                  disabled = false,
+                                                  id = null,
+                                              }) => {
+    const dispatch = useAppDispatch();
 
-    const dispatch = useAppDispatch()
-
-    const getFontSize = (level: number) => {
-        if(level === 1) return "24px"
-        if(level === 2) return "20px"
-        if(level === 3) return "16px"
-        return "14px"
-    }
+    const textStyle = {
+        color: color || undefined,
+        fontSize: fontSize ? `${fontSize}px` : "16px", // 默认 16px
+        textAlign: textAlign || "left",
+        fontWeight: fontWeight || "normal",
+        opacity: disabled ? 0.5 : 1, // 禁用时降低透明度
+    };
 
     function handleClick() {
-        dispatch(setSelectComponentId(id))
+        dispatch(setSelectComponentId(id));
     }
 
-    return (<div className={"cursor-pointer hover:bg-gray-100"} onClick={handleClick}>
-        <Text style={{textAlign: isCenter ? "center" : "left", fontSize: getFontSize(level), marginBottom: "0px"}}>
-            {text}
-        </Text>
-    </div>)
-}
+    return (
+        <div className="cursor-pointer hover:bg-gray-100 flex" onClick={handleClick}>
+            <Text style={textStyle} disabled={disabled} className={"flex-1"}>
+                {text}
+            </Text>
+        </div>
+    );
+};
 
-export default TextComp
+export default TextComp;
