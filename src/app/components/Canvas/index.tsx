@@ -79,7 +79,7 @@ export default function Canvas() {
 
     return (
         <SortableContainer items={components} onDragEnd={handleDragEnd}>
-            <div className="flex-2 p-4 bg-white h-[calc(100vh-96px)] mx-2 my-2 round" onDragOver={handleDragOver}
+            <div className="flex-2 p-4 bg-white h-[calc(100vh-96px)] overflow-auto custom-scrollbar mx-2 my-2 round" onDragOver={handleDragOver}
                  onDrop={handleDrop}>
                 <div className="text-2xl font-bold">Canvas</div>
                 <div className={"flex flex-col gap-2 mt-5"}>
