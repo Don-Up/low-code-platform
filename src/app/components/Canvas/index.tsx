@@ -16,8 +16,10 @@ import {ImagePropCompDefaultProp} from "@/app/components/Canvas/components/Image
 import {ButtonPropCompDefaultProp} from "@/app/components/Canvas/components/Button/ButtonPropCompProp";
 import {InputPropCompDefaultProp} from "@/app/components/Canvas/components/Input/InputPropCompProp";
 import {CardPropCompDefaultProp} from "@/app/components/Canvas/components/Card/CardPropCompProp";
+import {useTranslation} from "@/hooks/useTranslation";
 
 export default function Canvas() {
+
 
     useEffect(() => {
         dispatch(clearComponents())
@@ -25,6 +27,7 @@ export default function Canvas() {
 
     const dispatch = useAppDispatch();
     const components = useAppSelector((state) => state.comp.present.components);
+    const {t} = useTranslation();
 
     function getComp(comp: Comp) {
         switch (comp.type) {
@@ -79,9 +82,10 @@ export default function Canvas() {
 
     return (
         <SortableContainer items={components} onDragEnd={handleDragEnd}>
-            <div className="flex-2 p-4 bg-white h-[calc(100vh-96px)] overflow-auto custom-scrollbar mx-2 my-2 round" onDragOver={handleDragOver}
+            <div className="flex-2 p-4 bg-white h-[calc(100vh-96px)] overflow-auto custom-scrollbar mx-2 my-2 round"
+                 onDragOver={handleDragOver}
                  onDrop={handleDrop}>
-                <div className="text-2xl font-bold">Canvas</div>
+                <div className="text-2xl font-bold">{t("canvas")}</div>
                 <div className={"flex flex-col gap-2 mt-5"}>
                     {components.map(comp => <div key={comp.id}>
                         <SortableItem id={comp.id} key={comp.id}>

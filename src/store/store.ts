@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import componentSlice from "./componentSlice";
+import langSlice  from "@/store/langSlice";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage
 import undoable, { includeAction } from "redux-undo";
@@ -22,10 +23,12 @@ const undoableReducer = undoable(componentSlice, {
 });
 
 const persistedReducer = persistReducer(persistConfig, undoableReducer);
+const langReducer = persistReducer(persistConfig, langSlice)
 
 export const store = configureStore({
     reducer: {
         comp: persistedReducer,
+        lang: langReducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

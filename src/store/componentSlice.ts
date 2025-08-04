@@ -42,8 +42,13 @@ const compSlice = createSlice({
             state.components = state.components.filter((c) => c.id !== action.payload);
             state.selectedComponentId = null;
         },
+        saveState: (state) => state, // 仅用于触发保存，无需修改状态
+        loadState: (state, action: PayloadAction<Comp[]>) => {
+            state.components = action.payload;
+            state.selectedComponentId = null; // 重置选中状态
+        },
     },
 });
 
-export const { setComponents, addComponent, clearComponents, setSelectComponentId, updateComponent, swapComponent, removeComponent } = compSlice.actions;
+export const { setComponents, addComponent, clearComponents, setSelectComponentId, updateComponent, swapComponent, removeComponent, saveState, loadState } = compSlice.actions;
 export default compSlice.reducer;
