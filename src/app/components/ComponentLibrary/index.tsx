@@ -1,22 +1,27 @@
+"use client"
 import GridCell from "@/app/components/ComponentLibrary/components/GridCell";
-import {getLocaleFromCookies, translations} from "@/lib/locale";
-import {cookies} from "next/headers";
+import {useAppSelector} from "@/store/hooks";
+import {useTranslation} from "@/hooks/useTranslation";
 
-export default async function ComponentLibrary() {
+export default function ComponentLibrary() {
 
-    const locale = getLocaleFromCookies((await cookies()).toString());
+    const {isPreviewMode} = useAppSelector((state) => state.comp.present)
+    const {t} = useTranslation()
 
+    if(isPreviewMode){
+        return null
+    }
 
     return (
         <div className="flex-1 p-4 bg-white h-[calc(100vh-96px)] mx-2 my-2 round">
-            <div className="text-2xl font-bold">{translations[locale].componentLibrary}</div>
+            <div className="text-2xl font-bold">{t("componentLibrary")}</div>
             <div className="grid grid-cols-2 gap-4 p-4">
-                <GridCell bgColor={"bg-blue-500"} img={"button"} text={translations[locale].button}/>
-                <GridCell bgColor={"bg-green-500"} img={"text"} text={translations[locale].text}/>
-                <GridCell bgColor={"bg-purple-500"} img={"img"} text={translations[locale].image}/>
-                <GridCell bgColor={"bg-orange-500"} img={"input"} text={translations[locale].input}/>
-                <GridCell bgColor={"bg-pink-500"} img={"card"} text={translations[locale].card}/>
-                <GridCell bgColor={"bg-blue-600"} img={"container"} text={translations[locale].container}/>
+                <GridCell bgColor={"bg-blue-500"} img={"button"} text={t("button")}/>
+                <GridCell bgColor={"bg-green-500"} img={"text"} text={t("text")}/>
+                <GridCell bgColor={"bg-purple-500"} img={"img"} text={t("image")}/>
+                <GridCell bgColor={"bg-orange-500"} img={"input"} text={t("input")}/>
+                <GridCell bgColor={"bg-pink-500"} img={"card"} text={t("card")}/>
+                <GridCell bgColor={"bg-blue-600"} img={"container"} text={t("container")}/>
             </div>
         </div>
     );

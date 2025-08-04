@@ -4,14 +4,14 @@ import {EyeOutlined} from "@ant-design/icons";
 import {useAppDispatch, useAppSelector} from "@/store/hooks";
 import {ActionCreators as UndoActionCreators} from "redux-undo";
 import {Comp} from "@/app/components/Canvas/components/type";
-import {loadState} from "@/store/componentSlice";
+import {loadState, setPreviewMode} from "@/store/componentSlice";
 import LanguageSwitcher from "@/app/components/LanguageSwitcher";
 import {useTranslation} from "@/hooks/useTranslation";
 
 export default function Toolbar() {
 
     const dispatch = useAppDispatch()
-    const { components } = useAppSelector(state => state.comp.present)
+    const { components, isPreviewMode } = useAppSelector(state => state.comp.present)
     const { t } = useTranslation()
 
     const handleSave = () => {
@@ -50,6 +50,10 @@ export default function Toolbar() {
         // 示例：处理 file input 事件，解析 JSON
     }
 
+    const handleTogglePreview = () => {
+        dispatch(setPreviewMode(!isPreviewMode))
+    };
+
     return <div className={"h-20 flex bg-white select-none"}>
         <img src={"images/logo.svg"} className={"w-10 h-10 ml-4 my-auto"} alt={"logo"}/>
         <div className={"text-4xl leading-20 ml-2 font-comic font-bold text-main-blue"}>Low Code Editor</div>
@@ -64,8 +68,8 @@ export default function Toolbar() {
         <img src={"images/save.svg"} className={"w-5 ml-4"} alt={"save"}/>
         <div className={"leading-20 ml-1"} onClick={handleSave}>{t("save")}</div>
 
-        <Button type={"primary"} className={"my-auto mx-4"} size={"large"} icon={<EyeOutlined />}>
-            {t("previewMode")}
+        <Button type={"primary"} className={"my-auto mx-4"} size={"large"} icon={<EyeOutlined />} onClick={handleTogglePreview}>
+            {!isPreviewMode ? t("previewMode") : t("exitPreview")}
         </Button>
 
         <LanguageSwitcher/>

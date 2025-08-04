@@ -38,6 +38,7 @@ export type TranslationKeys =
     | 'redo'
     | 'save'
     | 'previewMode'
+    | 'exitPreview';
 
 // 翻译数据
 export const translations = {
@@ -56,6 +57,7 @@ export const translations = {
         redo: 'Redo',
         save: 'Save',
         previewMode: 'Preview Mode',
+        exitPreview: 'Exit Preview',
     },
     zh: {
         componentLibrary: '组件库',
@@ -72,5 +74,6 @@ export const translations = {
         redo: '重做',
         save: '保存',
         previewMode: '预览模式',
+        exitPreview: '退出预览',
     }
 } as const;

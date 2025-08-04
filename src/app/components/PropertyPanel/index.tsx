@@ -12,9 +12,17 @@ import {useTranslation} from "@/hooks/useTranslation";
 
 export default function PropertyPanel() {
 
+
     const dispatch = useAppDispatch();
     const {selectedComponentId, components} = useAppSelector((state) => state.comp.present);
     const {t} = useTranslation()
+
+    const {isPreviewMode} = useAppSelector((state) => state.comp.present)
+
+    if (isPreviewMode) {
+        return null
+    }
+
     if (selectedComponentId === null) {
         return <div className={"flex-1 p-4 bg-white h-[calc(100vh-96px)] mx-2 my-2 round"}>
             <div className="text-2xl font-bold mb-4">{t("property")}</div>

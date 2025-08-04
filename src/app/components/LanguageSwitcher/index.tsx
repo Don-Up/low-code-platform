@@ -6,7 +6,7 @@ export default function LanguageSwitcher() {
     const {locale, changeLanguage, supportedLocales, t} = useTranslation();
 
     return (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 mr-4">
             {supportedLocales.map((lang) => (
                 <button
                     key={lang}

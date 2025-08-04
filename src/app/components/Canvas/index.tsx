@@ -26,7 +26,7 @@ export default function Canvas() {
     }, []);
 
     const dispatch = useAppDispatch();
-    const components = useAppSelector((state) => state.comp.present.components);
+    const {components, isPreviewMode} = useAppSelector((state) => state.comp.present);
     const {t} = useTranslation();
 
     function getComp(comp: Comp) {
@@ -47,36 +47,40 @@ export default function Canvas() {
 
     function handleDragEnd(oldIndex: number, newIndex: number) {
         // Swap the component
-        dispatch(swapComponent({oldIndex, newIndex}))
+        if (!isPreviewMode)
+            dispatch(swapComponent({oldIndex, newIndex}))
     }
 
     const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault(); // 允许放下
+        if (!isPreviewMode)
+            e.preventDefault(); // 允许放下
     };
 
     const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        const componentType = e.dataTransfer.getData('componentType');
-        // 根据拖拽类型添加对应组件
-        switch (componentType) {
-            case 'Text':
-                // 添加到 Canvas（这里可根据鼠标位置设置 x, y）
-                dispatch(addComponent({...TextPropCompDefaultProp, id: nanoid(8)}))
-                break;
-            case 'Image':
-                dispatch(addComponent({...ImagePropCompDefaultProp, id: nanoid(8)}))
-                break;
-            case 'Button':
-                dispatch(addComponent({...ButtonPropCompDefaultProp, id: nanoid(8)}))
-                break;
-            case 'Input':
-                dispatch(addComponent({...InputPropCompDefaultProp, id: nanoid(8)}))
-                break;
-            case 'Card':
-                dispatch(addComponent({...CardPropCompDefaultProp, id: nanoid(8)}))
-                break;
-            default:
-                return;
+        if (!isPreviewMode) {
+            e.preventDefault();
+            const componentType = e.dataTransfer.getData('componentType');
+            // 根据拖拽类型添加对应组件
+            switch (componentType) {
+                case 'Text':
+                    // 添加到 Canvas（这里可根据鼠标位置设置 x, y）
+                    dispatch(addComponent({...TextPropCompDefaultProp, id: nanoid(8)}))
+                    break;
+                case 'Image':
+                    dispatch(addComponent({...ImagePropCompDefaultProp, id: nanoid(8)}))
+                    break;
+                case 'Button':
+                    dispatch(addComponent({...ButtonPropCompDefaultProp, id: nanoid(8)}))
+                    break;
+                case 'Input':
+                    dispatch(addComponent({...InputPropCompDefaultProp, id: nanoid(8)}))
+                    break;
+                case 'Card':
+                    dispatch(addComponent({...CardPropCompDefaultProp, id: nanoid(8)}))
+                    break;
+                default:
+                    return;
+            }
         }
     };
 

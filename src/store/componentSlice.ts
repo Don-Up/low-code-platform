@@ -4,11 +4,13 @@ import {Comp} from "@/app/components/Canvas/components/type";
 interface ComponentState {
     components: Comp[];
     selectedComponentId: string | null;
+    isPreviewMode: boolean;
 }
 
 const initialState: ComponentState = {
     components: [],
-    selectedComponentId: null
+    selectedComponentId: null,
+    isPreviewMode: false,
 };
 
 const compSlice = createSlice({
@@ -47,8 +49,11 @@ const compSlice = createSlice({
             state.components = action.payload;
             state.selectedComponentId = null; // 重置选中状态
         },
+        setPreviewMode: (state, action: PayloadAction<boolean>) => {
+            state.isPreviewMode = action.payload;
+        },
     },
 });
 
-export const { setComponents, addComponent, clearComponents, setSelectComponentId, updateComponent, swapComponent, removeComponent, saveState, loadState } = compSlice.actions;
+export const { setComponents, addComponent, clearComponents, setSelectComponentId, updateComponent, swapComponent, removeComponent, saveState, loadState, setPreviewMode } = compSlice.actions;
 export default compSlice.reducer;
