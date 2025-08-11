@@ -1,4 +1,4 @@
-import {CompType} from "@/app/components/Canvas/components/type";
+import { CompType } from "@/app/components/Canvas/components/type";
 
 export type CardPropCompProp = {
     id: string;
@@ -6,11 +6,19 @@ export type CardPropCompProp = {
 
     title?: string;
     content?: string;
-}
+    width?: number;
+    height?: number;
+    backgroundColor?: string;
+    bordered?: boolean;
+};
 
 export const CardPropCompDefaultProp: CardPropCompProp = {
     id: "",
     type: "card",
     title: "Default Title",
-    content: "Default Content"
-}
+    content: "Default Content",
+    width: 300,
+    height: 200,
+    backgroundColor: "#ffffff",
+    bordered: true,
+};

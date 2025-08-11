@@ -1,9 +1,18 @@
+// LanguageSwitcher.tsx
 'use client';
+import React from "react";
+import { useTranslation as defaultUseTranslation } from '@/hooks/useTranslation';
 
-import {useTranslation} from '@/hooks/useTranslation';
+interface LanguageSwitcherProps {
+    // 允许传入自定义的 useTranslation 实现（方便测试/Storybook）
+    useTranslationImpl?: typeof defaultUseTranslation;
+}
 
-export default function LanguageSwitcher() {
-    const {locale, changeLanguage, supportedLocales, t} = useTranslation();
+
+const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
+                                                               useTranslationImpl = defaultUseTranslation,
+                                                           }) => {
+    const { locale, changeLanguage, supportedLocales, t } = useTranslationImpl();
 
     return (
         <div className="flex items-center gap-2 mr-4">
@@ -24,3 +33,5 @@ export default function LanguageSwitcher() {
         </div>
     );
 }
+
+export default LanguageSwitcher
