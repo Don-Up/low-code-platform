@@ -38,7 +38,10 @@ export type TranslationKeys =
     | 'redo'
     | 'save'
     | 'previewMode'
-    | 'exitPreview';
+    | 'exitPreview'
+    | "saveCanvas"
+    | "enterCanvasName"
+    | "cancel";
 
 // 翻译数据
 export const translations = {
@@ -58,6 +61,9 @@ export const translations = {
         save: 'Save',
         previewMode: 'Preview Mode',
         exitPreview: 'Exit Preview',
+        saveCanvas: "Save Canvas",
+        enterCanvasName: "Enter canvas name",
+        cancel: "Cancel"
     },
     zh: {
         componentLibrary: '组件库',
@@ -75,5 +81,8 @@ export const translations = {
         save: '保存',
         previewMode: '预览模式',
         exitPreview: '退出预览',
+        saveCanvas: "保存画布",
+        enterCanvasName: "输入画布名称",
+        cancel: "取消"
     }
 } as const;

@@ -1,6 +1,6 @@
 // src/lib/request.ts
-import { post } from './api';
-import { Login, Register } from './models';
+import {del, get, post, put} from './api';
+import {Canvas, Components, CreateCanvasRequest, Login, Register, UpdateCanvasRequest} from './models';
 
 /**
  * User authentication API functions
@@ -8,26 +8,42 @@ import { Login, Register } from './models';
 
 // Login function
 export const login = async (email: string, password: string): Promise<Login> => {
-  return await post<Login>('/auth/login', { email, password });
+    return await post<Login>('/auth/login', {email, password});
 };
 
 // Register function
 export const register = async (email: string, password: string): Promise<Register> => {
-  return await post<Register>('/auth/register', { email, password });
+    return await post<Register>('/auth/register', {email, password});
 };
 
-// Logout function
-export const logout = (): void => {
-  localStorage.removeItem('token');
-  window.location.href = '/login';
+/**
+ * Canvas API functions
+ */
+
+// Create a new canvas
+export const createCanvas = async (createCanvasDto: Omit<CreateCanvasRequest, 'userId'> & {
+    title: string;
+    components: Components
+}): Promise<Canvas> => {
+    return await post<Canvas>('/canvas', createCanvasDto);
 };
 
-// Get current user token
-export const getCurrentUserToken = (): string | null => {
-  return localStorage.getItem('token');
+// Get all canvases for a specific user
+export const getUserCanvases = async (): Promise<Canvas[]> => {
+    return await get<Canvas[]>('/canvas');
 };
 
-// Set user token after successful login/registration
-export const setCurrentUserToken = (token: string): void => {
-  localStorage.setItem('token', token);
+// Get a specific canvas by ID
+export const getCanvasById = async (id: number): Promise<Canvas> => {
+    return await get<Canvas>(`/canvas/${id}`);
+};
+
+// Update a canvas
+export const updateCanvas = async (id: number, updateCanvasDto: UpdateCanvasRequest): Promise<Canvas> => {
+    return await put<Canvas>(`/canvas/${id}`, updateCanvasDto);
+};
+
+// Delete a canvas
+export const deleteCanvas = async (id: number): Promise<void> => {
+    return await del<void>(`/canvas/${id}`);
 };

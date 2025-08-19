@@ -1,24 +1,30 @@
 "use client";
 
-import React, {useState} from "react";
-import {Button, Col, Form, Input, Row} from "antd";
-import {register} from "@/lib/request"; // Specific type for errorInfo
-import { toast } from 'react-toastify';
+import React, { useState } from "react";
+import { Form, Input, Button, Row, Col, Typography } from "antd";
+import { useRouter } from "next/navigation";
+import { login } from "@/lib/request"; // Adjust the import path as needed
+import { toast } from "react-toastify";
+import Link from "next/link";
 
+const { Text } = Typography;
 
-const RegisterPage: React.FC = () => {
+const LoginPage: React.FC = () => {
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
     const onFinish = async (values: { email: string; password: string }) => {
-        toast.info("Registration successful! Redirecting...");
         setLoading(true);
         try {
-            const result = await register(values.email, values.password);
-            toast.success("Registration successful! Redirecting...");
-            console.log("Registration result:", result);
+            const result = await login(values.email, values.password);
+            toast.success("Login successful! Redirecting...");
+            console.log("Login result:", result);
+            // Store token or user data if needed (e.g., in localStorage or context)
+            localStorage.setItem("accessToken", result.accessToken);
+            router.push("/"); // Redirect to homepage
         } catch (error) {
-            toast.error("Registration failed. Please try again.");
-            console.error("Registration error:", error);
+            toast.error("Login failed. Please try again.");
+            console.error("Login error:", error);
         } finally {
             setLoading(false);
         }
@@ -28,9 +34,9 @@ const RegisterPage: React.FC = () => {
         <Row justify="center" align="middle" className="min-h-screen bg-gray-100">
             <Col xs={22} sm={16} md={12} lg={8}>
                 <div className="p-6 bg-white rounded-lg shadow-md">
-                    <h2 className="text-2xl font-bold text-center mb-6">Register</h2>
+                    <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
                     <Form
-                        name="register"
+                        name="login"
                         onFinish={onFinish}
                         layout="vertical"
                         initialValues={{ email: "", password: "" }}
@@ -66,14 +72,20 @@ const RegisterPage: React.FC = () => {
                                 loading={loading}
                                 className="mt-4"
                             >
-                                Register
+                                Login
                             </Button>
                         </Form.Item>
                     </Form>
+                    <div className="text-center mt-4">
+                        <Text>Don't have an account? </Text>
+                        <Link href="/register" className="text-blue-500 hover:underline">
+                            Register here
+                        </Link>
+                    </div>
                 </div>
             </Col>
         </Row>
     );
 };
 
-export default RegisterPage;
+export default LoginPage;
