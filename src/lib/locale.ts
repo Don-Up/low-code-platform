@@ -41,7 +41,9 @@ export type TranslationKeys =
     | 'exitPreview'
     | "saveCanvas"
     | "enterCanvasName"
-    | "cancel";
+    | "cancel"
+    | "componentTree"
+    ;
 
 // 翻译数据
 export const translations = {
@@ -63,7 +65,8 @@ export const translations = {
         exitPreview: 'Exit Preview',
         saveCanvas: "Save Canvas",
         enterCanvasName: "Enter canvas name",
-        cancel: "Cancel"
+        cancel: "Cancel",
+        componentTree: "Component Tree"
     },
     zh: {
         componentLibrary: '组件库',
@@ -83,6 +86,7 @@ export const translations = {
         exitPreview: '退出预览',
         saveCanvas: "保存画布",
         enterCanvasName: "输入画布名称",
-        cancel: "取消"
+        cancel: "取消",
+        componentTree: "组件树"
     }
 } as const;

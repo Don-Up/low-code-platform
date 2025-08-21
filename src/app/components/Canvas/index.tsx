@@ -20,11 +20,6 @@ import {useTranslation} from "@/hooks/useTranslation";
 
 export default function Canvas() {
 
-
-    useEffect(() => {
-        dispatch(clearComponents())
-    }, []);
-
     const dispatch = useAppDispatch();
     const {components, isPreviewMode} = useAppSelector((state) => state.comp.present);
     const {t} = useTranslation();
