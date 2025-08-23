@@ -1,9 +1,6 @@
-import { CompType } from "@/app/components/Canvas/components/type";
+import {BaseCompProp} from "@/app/components/Canvas/components/type";
 
-export type CardPropCompProp = {
-    id: string;
-    type?: CompType;
-
+export type CardPropCompProp = BaseCompProp & {
     title?: string;
     content?: string;
     width?: number;

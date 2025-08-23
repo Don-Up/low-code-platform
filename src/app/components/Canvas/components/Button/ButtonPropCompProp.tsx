@@ -1,9 +1,6 @@
-import {CompType} from "@/app/components/Canvas/components/type";
+import {BaseCompProp} from "@/app/components/Canvas/components/type";
 
-export type ButtonPropCompProp = {
-    id: string;
-    type?: CompType;
-
+export type ButtonPropCompProp = BaseCompProp & {
     text?: string;
     textColor?: string;
     textSize?: number;

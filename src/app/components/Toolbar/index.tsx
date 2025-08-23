@@ -4,7 +4,7 @@ import { Button, Modal, Input } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { ActionCreators as UndoActionCreators } from "redux-undo";
-import { setPreviewMode } from "@/store/componentSlice";
+import {clearComponents, setPreviewMode} from "@/store/componentSlice";
 import LanguageSwitcher from "@/app/components/LanguageSwitcher";
 import { useTranslation } from "@/hooks/useTranslation";
 import { toast } from "react-toastify";
@@ -55,6 +55,10 @@ export default function Toolbar() {
         dispatch(setPreviewMode(!isPreviewMode));
     };
 
+    function handleClear() {
+        dispatch(clearComponents())
+    }
+
     return (
         <div className={"h-20 flex bg-white select-none"}>
             <img src={"images/logo.svg"} className={"w-10 h-10 ml-4 my-auto"} alt={"logo"} />
@@ -81,6 +85,15 @@ export default function Toolbar() {
             <div className={"leading-20 ml-1"} onClick={handleSave}>
                 {t("save")}
             </div>
+
+            <Button
+                type={"default"}
+                size={"large"}
+                className={"my-auto ml-4"}
+                onClick={handleClear}
+                >
+                Clear
+            </Button>
 
             <Button
                 type={"primary"}

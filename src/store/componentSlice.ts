@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {Comp} from "@/app/components/Canvas/components/type";
+import {ContainerPropCompProp} from "@/app/components/Canvas/components/Container/ContainerPropCompProp";
 
 interface ComponentState {
     components: Comp[];
@@ -21,7 +22,22 @@ const compSlice = createSlice({
             state.components = action.payload;
         },
         addComponent: (state: ComponentState, action: PayloadAction<Comp>) => {
-            state.components.push(action.payload);
+            // state.components.push(action.payload);
+            const newComp = action.payload;
+            if (newComp.parentId) {
+                // Find the parent container and add to its children
+                const parentIndex = state.components.findIndex((c) => c.id === newComp.parentId);
+                if (parentIndex !== -1 && state.components[parentIndex].type === "container") {
+                    const comp = state.components[parentIndex] as ContainerPropCompProp;
+                    if (!comp.children) {
+                        comp.children = [];
+                    }
+                    comp.children!.push(newComp);
+                }
+            } else {
+                // Add to root level if no parentId
+                state.components.push(newComp);
+            }
         },
         updateComponent: (state: ComponentState, action: PayloadAction<Comp>) => {
             const index = state.components.findIndex((c) => c.id === state.selectedComponentId);
@@ -37,8 +53,12 @@ const compSlice = createSlice({
             state.selectedComponentId = action.payload;
         },
         swapComponent : (state: ComponentState, action: PayloadAction<{oldIndex: number, newIndex: number}>) => {
-            const {oldIndex, newIndex} = action.payload;
-            [state.components[oldIndex], state.components[newIndex]] = [state.components[newIndex], state.components[oldIndex]];
+            // const {oldIndex, newIndex} = action.payload;
+            // [state.components[oldIndex], state.components[newIndex]] = [state.components[newIndex], state.components[oldIndex]];
+            const { oldIndex, newIndex } = action.payload;
+            if (oldIndex >= 0 && newIndex >= 0 && oldIndex < state.components.length && newIndex < state.components.length) {
+                [state.components[oldIndex], state.components[newIndex]] = [state.components[newIndex], state.components[oldIndex]];
+            }
         },
         removeComponent: (state: ComponentState, action: PayloadAction<string>) => {
             state.components = state.components.filter((c) => c.id !== action.payload);

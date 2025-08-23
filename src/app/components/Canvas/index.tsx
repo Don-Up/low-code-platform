@@ -2,8 +2,7 @@
 import {useAppDispatch, useAppSelector} from "@/store/hooks";
 import {Comp} from "@/app/components/Canvas/components/type";
 import TextComp from "@/app/components/Canvas/components/Text";
-import {useEffect} from "react";
-import {addComponent, clearComponents, swapComponent} from "@/store/componentSlice";
+import {addComponent, swapComponent} from "@/store/componentSlice";
 import ImageComp from "@/app/components/Canvas/components/Image";
 import ButtonComp from "@/app/components/Canvas/components/Button";
 import InputComp from "@/app/components/Canvas/components/Input";
@@ -17,28 +16,34 @@ import {ButtonPropCompDefaultProp} from "@/app/components/Canvas/components/Butt
 import {InputPropCompDefaultProp} from "@/app/components/Canvas/components/Input/InputPropCompProp";
 import {CardPropCompDefaultProp} from "@/app/components/Canvas/components/Card/CardPropCompProp";
 import {useTranslation} from "@/hooks/useTranslation";
+import Container from "@/app/components/Canvas/components/Container";
+import {
+    ContainerPropCompDefaultProp,
+    ContainerPropCompProp
+} from "@/app/components/Canvas/components/Container/ContainerPropCompProp";
+
+export function getComp(comp: Comp) {
+    switch (comp.type) {
+        case "text":
+            return <TextComp {...comp} key={comp.id}/>
+        case "image":
+            return <ImageComp {...comp} key={comp.id}/>
+        case "button":
+            return <ButtonComp {...comp} key={comp.id}/>
+        case "input":
+            return <InputComp  {...comp} key={comp.id}/>
+        case "card":
+            return <CardComp {...comp} key={comp.id}/>
+        case "container":
+            return <Container {...comp} key={comp.id}/>
+    }
+}
 
 export default function Canvas() {
 
     const dispatch = useAppDispatch();
     const {components, isPreviewMode} = useAppSelector((state) => state.comp.present);
     const {t} = useTranslation();
-
-    function getComp(comp: Comp) {
-        switch (comp.type) {
-            case "text":
-                return <TextComp {...comp}/>
-            case "image":
-                return <ImageComp {...comp}/>
-            case "button":
-                return <ButtonComp {...comp}/>
-            case "input":
-                return <InputComp  {...comp}/>
-            case "card":
-                return <CardComp {...comp}/>
-        }
-        return <div>null</div>
-    }
 
     function handleDragEnd(oldIndex: number, newIndex: number) {
         // Swap the component
@@ -54,7 +59,9 @@ export default function Canvas() {
     const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
         if (!isPreviewMode) {
             e.preventDefault();
+
             const componentType = e.dataTransfer.getData('componentType');
+            console.log("componentType12223:", componentType)
             // 根据拖拽类型添加对应组件
             switch (componentType) {
                 case 'Text':
@@ -73,10 +80,69 @@ export default function Canvas() {
                 case 'Card':
                     dispatch(addComponent({...CardPropCompDefaultProp, id: nanoid(8)}))
                     break;
+                case "Container":
+                    dispatch(addComponent({...ContainerPropCompDefaultProp, id: nanoid(8)}))
+                    break;
                 default:
                     return;
             }
         }
+        // if (!isPreviewMode) {
+        //     e.preventDefault();
+        //     //💡=== Check if drop target is not a Container by inspecting the target element
+        //     const target = e.target as HTMLElement;
+        //     const isInsideContainer = target.closest(".border-dashed") !== null; // Check if inside a Container's dashed border
+        //     if (isInsideContainer) return; // Do nothing if dropped inside a Container
+        //
+        //     const componentType = e.dataTransfer.getData("componentType");
+        //     //💡=== Add component only if dropped on Canvas (not Container)
+        //     let newComp: Comp;
+        //     switch (componentType) {
+        //         case "Text":
+        //             newComp = {...TextPropCompDefaultProp, id: nanoid(8)};
+        //             break;
+        //         case "Image":
+        //             newComp = {...ImagePropCompDefaultProp, id: nanoid(8)};
+        //             break;
+        //         case "Button":
+        //             newComp = {...ButtonPropCompDefaultProp, id: nanoid(8)};
+        //             break;
+        //         case "Input":
+        //             newComp = {...InputPropCompDefaultProp, id: nanoid(8)};
+        //             break;
+        //         case "Card":
+        //             newComp = {...CardPropCompDefaultProp, id: nanoid(8)};
+        //             break;
+        //         case "Container":
+        //             newComp = {...ContainerPropCompDefaultProp, id: nanoid(8)};
+        //             break;
+        //         default:
+        //             return;
+        //     }
+        //     dispatch(addComponent(newComp)); // Add to root level only
+        // }
+    };
+
+    const renderNestedComponents = (comp: Comp) => {
+        if (comp.type === "container") {
+            const children = (comp as ContainerPropCompProp).children
+            return (
+                <Container {...comp}>
+                    {children}
+                </Container>
+            );
+        }
+        return getComp(comp);
+        // if (comp.type === "container" && (comp as ContainerPropCompProp).children) {
+        //     return (
+        //         <Container {...comp}>
+        //             {(comp as ContainerPropCompProp).children!.map((child) =>
+        //                 child
+        //             )}
+        //         </Container>
+        //     );
+        // }
+        // return getComp(comp);
     };
 
     return (
@@ -88,7 +154,8 @@ export default function Canvas() {
                 <div className={"flex flex-col gap-2 mt-5"}>
                     {components.map(comp => <div key={comp.id}>
                         <SortableItem id={comp.id} key={comp.id}>
-                            {getComp(comp)}
+                            {/*{getComp(comp)}*/}
+                            {renderNestedComponents(comp)}
                         </SortableItem>
                     </div>)}
                 </div>

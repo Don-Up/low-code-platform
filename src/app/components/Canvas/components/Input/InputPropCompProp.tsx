@@ -1,9 +1,6 @@
-import { CompType } from "@/app/components/Canvas/components/type";
+import {BaseCompProp} from "@/app/components/Canvas/components/type";
 
-export type InputPropCompProp = {
-    id: string;
-    type?: CompType;
-
+export type InputPropCompProp = BaseCompProp & {
     value?: string;
     placeholder?: string;
     inputType?: "text" | "password" | "number"; // 输入框类型

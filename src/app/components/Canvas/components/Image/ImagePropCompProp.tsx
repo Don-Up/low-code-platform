@@ -1,9 +1,6 @@
-import {CompType} from "@/app/components/Canvas/components/type";
+import {BaseCompProp} from "@/app/components/Canvas/components/type";
 
-export type ImagePropCompProp = {
-    id: string;
-    type?: CompType;
-
+export type ImagePropCompProp = BaseCompProp & {
     src?: string;
     width?: number;
     height?: number;

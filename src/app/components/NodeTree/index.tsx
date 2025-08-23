@@ -22,12 +22,22 @@ export default function NodeTree() {
     const { t } = useTranslation();
 
     // Convert components to tree data structure
-    const buildTreeData = (components: Comp[]): TreeDataItem[] => {
-        return components.map((comp) => ({
-            key: comp.id,
-            title: `${comp.type} ${comp.type === "text" && (comp as TextPropCompProp).text ? `: ${(comp as TextPropCompProp).text}` : ""}`,
-            children: [], // Initially empty; can be expanded for nested components
-        }));
+    // const buildTreeData = (components: Comp[]): TreeDataItem[] => {
+    //     return components.map((comp) => ({
+    //         key: comp.id,
+    //         title: `${comp.type} ${comp.type === "text" && (comp as TextPropCompProp).text ? `: ${(comp as TextPropCompProp).text}` : ""}`,
+    //         children: [], // Initially empty; can be expanded for nested components
+    //     }));
+    // };
+
+    const buildTreeData = (components: Comp[], parentId: string | null = null): TreeDataItem[] => {
+        return components
+            .filter((comp) => comp.parentId === parentId || (parentId === null && comp.parentId === undefined)) // Handle undefined parentId as root
+            .map((comp) => ({
+                key: comp.id,
+                title: `${comp.type} ${comp.type === "text" && (comp as TextPropCompProp).text ? `: ${(comp as TextPropCompProp).text}` : ""}`,
+                children: buildTreeData(components, comp.id), // Recursively build children
+            }));
     };
 
     const treeData = buildTreeData(components);
@@ -38,6 +48,7 @@ export default function NodeTree() {
     };
 
     const handleDrop = (info: any) => {
+
         const dropKey = info.node.key;
         const dragKey = info.dragNode.key;
         const dropPos = info.node.pos.split("-");
