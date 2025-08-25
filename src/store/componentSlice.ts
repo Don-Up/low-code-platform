@@ -40,10 +40,24 @@ const compSlice = createSlice({
             }
         },
         updateComponent: (state: ComponentState, action: PayloadAction<Comp>) => {
-            const index = state.components.findIndex((c) => c.id === state.selectedComponentId);
-            if (index !== -1) {
-                state.components[index] = action.payload;
-            }
+            const updatedComp = action.payload;
+            const updateNested = (comps: Comp[]): boolean => {
+                for (let i = 0; i < comps.length; i++) {
+                    if (comps[i].id === state.selectedComponentId) {
+                        comps[i] = updatedComp;
+                        return true;
+                    }
+                    if (comps[i].type === "container" && (comps[i] as ContainerPropCompProp).children) {
+                        if (updateNested((comps[i] as ContainerPropCompProp).children!)) return true;
+                    }
+                }
+                return false;
+            };
+            updateNested(state.components);
+            // const index = state.components.findIndex((c) => c.id === state.selectedComponentId);
+            // if (index !== -1) {
+            //     state.components[index] = action.payload;
+            // }
         },
         clearComponents: (state: ComponentState) => {
             state.components = [];

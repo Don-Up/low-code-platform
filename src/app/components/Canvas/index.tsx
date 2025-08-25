@@ -22,27 +22,28 @@ import {
     ContainerPropCompProp
 } from "@/app/components/Canvas/components/Container/ContainerPropCompProp";
 
-export function getComp(comp: Comp) {
+export function getComp(comp: Comp, isSelected: boolean = false) {
+    const commonProps = { ...comp, isSelected }; // Pass isSelected to indicate selection
     switch (comp.type) {
         case "text":
-            return <TextComp {...comp} key={comp.id}/>
+            return <TextComp {...commonProps} />;
         case "image":
-            return <ImageComp {...comp} key={comp.id}/>
+            return <ImageComp {...commonProps} />;
         case "button":
-            return <ButtonComp {...comp} key={comp.id}/>
+            return <ButtonComp {...commonProps} />;
         case "input":
-            return <InputComp  {...comp} key={comp.id}/>
+            return <InputComp {...commonProps} />;
         case "card":
-            return <CardComp {...comp} key={comp.id}/>
+            return <CardComp {...commonProps} />;
         case "container":
-            return <Container {...comp} key={comp.id}/>
+            return <Container {...commonProps} />;
     }
 }
 
 export default function Canvas() {
 
     const dispatch = useAppDispatch();
-    const {components, isPreviewMode} = useAppSelector((state) => state.comp.present);
+    const {components, isPreviewMode, selectedComponentId} = useAppSelector((state) => state.comp.present);
     const {t} = useTranslation();
 
     function handleDragEnd(oldIndex: number, newIndex: number) {
@@ -61,7 +62,6 @@ export default function Canvas() {
             e.preventDefault();
 
             const componentType = e.dataTransfer.getData('componentType');
-            console.log("componentType12223:", componentType)
             // 根据拖拽类型添加对应组件
             switch (componentType) {
                 case 'Text':
@@ -124,25 +124,24 @@ export default function Canvas() {
     };
 
     const renderNestedComponents = (comp: Comp) => {
-        if (comp.type === "container") {
-            const children = (comp as ContainerPropCompProp).children
-            return (
-                <Container {...comp}>
-                    {children}
-                </Container>
-            );
-        }
-        return getComp(comp);
-        // if (comp.type === "container" && (comp as ContainerPropCompProp).children) {
+        // if (comp.type === "container") {
+        //     const children = (comp as ContainerPropCompProp).children
         //     return (
         //         <Container {...comp}>
-        //             {(comp as ContainerPropCompProp).children!.map((child) =>
-        //                 child
-        //             )}
+        //             {children}
         //         </Container>
         //     );
         // }
         // return getComp(comp);
+        const isSelected = comp.id === selectedComponentId; // Check if this component is selected
+        if (comp.type === "container" && (comp as ContainerPropCompProp).children) {
+            return (
+                <Container {...comp} isSelected={isSelected}>
+                    {(comp as ContainerPropCompProp).children}
+                </Container>
+            );
+        }
+        return getComp(comp, isSelected); // Pass isSelected to leaf components
     };
 
     return (

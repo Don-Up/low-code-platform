@@ -28,6 +28,7 @@ const TextComp: React.FC<TextPropCompProp> = ({
     };
 
     function handleClick() {
+        console.log("setSelectComponentId", id)
         dispatch(setSelectComponentId(id));
     }
 

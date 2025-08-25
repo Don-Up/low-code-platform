@@ -9,6 +9,7 @@ import InputPropComp from "@/app/components/Canvas/components/Input/InputPropCom
 import CardPropComp from "@/app/components/Canvas/components/Card/CardPropComp";
 import {Button} from "antd";
 import {useTranslation} from "@/hooks/useTranslation";
+import {ContainerPropCompProp} from "@/app/components/Canvas/components/Container/ContainerPropCompProp";
 
 export default function PropertyPanel() {
 
@@ -30,7 +31,20 @@ export default function PropertyPanel() {
         </div>
     }
 
-    const selectedComponent = components.find((component) => component.id === selectedComponentId);
+    const findComponent = (comps: Comp[], id: string | null): Comp | undefined => {
+        for (const comp of comps) {
+            if (comp.id === id) return comp;
+            if (comp.type === "container" && (comp as ContainerPropCompProp).children) {
+                const found = findComponent((comp as ContainerPropCompProp).children || [], id);
+                if (found) return found;
+            }
+        }
+        return undefined;
+    };
+
+    const selectedComponent = findComponent(components, selectedComponentId);
+
+    // const selectedComponent = components.find((component) => component.id === selectedComponentId);
 
 
     function handleCompChange(values: Comp) {

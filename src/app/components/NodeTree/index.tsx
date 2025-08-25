@@ -7,6 +7,7 @@ import { Comp } from "@/app/components/Canvas/components/type";
 import { useTranslation } from "@/hooks/useTranslation";
 import { TextPropCompProp } from "@/app/components/Canvas/components/Text/TextPropCompProp";
 import { setSelectComponentId, swapComponent } from "@/store/componentSlice";
+import {ContainerPropCompProp} from "@/app/components/Canvas/components/Container/ContainerPropCompProp";
 
 const { TreeNode } = Tree;
 
@@ -21,22 +22,13 @@ export default function NodeTree() {
     const { components } = useAppSelector((state) => state.comp.present);
     const { t } = useTranslation();
 
-    // Convert components to tree data structure
-    // const buildTreeData = (components: Comp[]): TreeDataItem[] => {
-    //     return components.map((comp) => ({
-    //         key: comp.id,
-    //         title: `${comp.type} ${comp.type === "text" && (comp as TextPropCompProp).text ? `: ${(comp as TextPropCompProp).text}` : ""}`,
-    //         children: [], // Initially empty; can be expanded for nested components
-    //     }));
-    // };
-
     const buildTreeData = (components: Comp[], parentId: string | null = null): TreeDataItem[] => {
         return components
             .filter((comp) => comp.parentId === parentId || (parentId === null && comp.parentId === undefined)) // Handle undefined parentId as root
             .map((comp) => ({
                 key: comp.id,
                 title: `${comp.type} ${comp.type === "text" && (comp as TextPropCompProp).text ? `: ${(comp as TextPropCompProp).text}` : ""}`,
-                children: buildTreeData(components, comp.id), // Recursively build children
+                children: comp.type === "container" ? buildTreeData((comp as ContainerPropCompProp).children || [], comp.id) : [],
             }));
     };
 
