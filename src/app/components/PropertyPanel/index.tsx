@@ -10,6 +10,7 @@ import CardPropComp from "@/app/components/Canvas/components/Card/CardPropComp";
 import {Button} from "antd";
 import {useTranslation} from "@/hooks/useTranslation";
 import {ContainerPropCompProp} from "@/app/components/Canvas/components/Container/ContainerPropCompProp";
+import ContainerPropComp from "@/app/components/Canvas/components/Container/ContainerPropComp";
 
 export default function PropertyPanel() {
 
@@ -64,6 +65,8 @@ export default function PropertyPanel() {
                     return <InputPropComp {...selectedComponent} onChange={handleCompChange}/>
                 case "card":
                     return <CardPropComp {...selectedComponent} onChange={handleCompChange}/>
+                case "container":
+                    return <ContainerPropComp {...selectedComponent} onChange={handleCompChange}/>
             }
         }
         return <div>div</div>
