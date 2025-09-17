@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
+import React, {useEffect} from "react";
 import { Button as AntdButton } from "antd";
-import { useAppDispatch } from "@/store/hooks";
-import { setSelectComponentId } from "@/store/componentSlice";
+import {useAppDispatch, useAppSelector} from "@/store/hooks";
+import {clearSubmissionResult, setSelectComponentId, submitForm} from "@/store/componentSlice";
 import { ButtonPropCompProp } from "./ButtonPropCompProp";
 
 const ButtonComp: React.FC<ButtonPropCompProp> = ({
@@ -18,6 +18,8 @@ const ButtonComp: React.FC<ButtonPropCompProp> = ({
                                                       id = null,
                                                   }) => {
     const dispatch = useAppDispatch();
+    const formData = useAppSelector(state => state.comp.present.formData)
+    const submissionResult = useAppSelector(state => state.comp.present.submissionResult)
 
     const btnStyle = {
         width: `${width}px`,
@@ -29,7 +31,19 @@ const ButtonComp: React.FC<ButtonPropCompProp> = ({
 
     function handleClick() {
         dispatch(setSelectComponentId(id));
+        dispatch(submitForm())
+        // formData {NzYT5Nko: '121'}
+        console.log("formData", formData)
     }
+
+    useEffect(() => {
+        if(submissionResult){
+            const timer = setTimeout(() => {
+                dispatch(clearSubmissionResult());
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [submissionResult, dispatch]);
 
     return (
         <div className="cursor-pointer hover:bg-gray-100" onClick={handleClick}>

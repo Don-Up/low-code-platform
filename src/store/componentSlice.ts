@@ -6,12 +6,16 @@ interface ComponentState {
     components: Comp[];
     selectedComponentId: string | null;
     isPreviewMode: boolean;
+    formData: {[key: string]: string },
+    submissionResult: string | null
 }
 
 const initialState: ComponentState = {
     components: [],
     selectedComponentId: null,
     isPreviewMode: false,
+    formData: {},
+    submissionResult: null
 };
 
 const compSlice = createSlice({
@@ -86,8 +90,20 @@ const compSlice = createSlice({
         setPreviewMode: (state, action: PayloadAction<boolean>) => {
             state.isPreviewMode = action.payload;
         },
+        updateFormData: (state, action: PayloadAction<{ id: string; value: string }>) => {
+            console.log("formData:", state.formData)
+            state.formData[action.payload.id] = action.payload.value;
+        },
+        submitForm: (state) => {
+            state.submissionResult = JSON.stringify(state.formData, null, 2);
+            console.log("Form Submitted:", state.formData); // Temporary logging
+            // Future: API call or export
+        },
+        clearSubmissionResult: (state) => {
+            state.submissionResult = null;
+        },
     },
 });
 
-export const { setComponents, addComponent, clearComponents, setSelectComponentId, updateComponent, swapComponent, removeComponent, saveState, loadState, setPreviewMode } = compSlice.actions;
+export const { setComponents, addComponent, clearComponents, setSelectComponentId, updateComponent, swapComponent, removeComponent, saveState, loadState, setPreviewMode, updateFormData, submitForm, clearSubmissionResult } = compSlice.actions;
 export default compSlice.reducer;

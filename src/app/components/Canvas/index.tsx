@@ -23,7 +23,7 @@ import {
 } from "@/app/components/Canvas/components/Container/ContainerPropCompProp";
 
 export function getComp(comp: Comp, isSelected: boolean = false) {
-    const commonProps = { ...comp, isSelected }; // Pass isSelected to indicate selection
+    const commonProps = {...comp, isSelected}; // Pass isSelected to indicate selection
     switch (comp.type) {
         case "text":
             return <TextComp {...commonProps} />;
@@ -136,7 +136,7 @@ export default function Canvas() {
         const isSelected = comp.id === selectedComponentId; // Check if this component is selected
         if (comp.type === "container" && (comp as ContainerPropCompProp).children) {
             return (
-                <Container {...comp} isSelected={isSelected}>
+                <Container {...comp} isSelected={isSelected} key={comp.id}>
                     {(comp as ContainerPropCompProp).children}
                 </Container>
             );

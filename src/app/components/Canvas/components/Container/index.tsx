@@ -129,7 +129,7 @@ export default function Container({ id, children, style, isSelected }: Container
             onDragOver={handleDragOver}
             onDrop={handleDrop}
         >
-            {children && Array.isArray(children) ? children.map((child) => renderChild(child)) : null}
+            {children && Array.isArray(children) ? children.map((child) => <div key={child.id}>renderChild(child)</div>) : null}
         </div>
     );
     //💡---

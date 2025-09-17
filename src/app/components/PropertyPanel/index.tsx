@@ -1,7 +1,7 @@
 "use client"
 import {useAppDispatch, useAppSelector} from "@/store/hooks";
 import TextPropComp from "@/app/components/Canvas/components/Text/TextPropComp";
-import {removeComponent, updateComponent} from "@/store/componentSlice";
+import {removeComponent, updateComponent, updateFormData} from "@/store/componentSlice";
 import {Comp} from "@/app/components/Canvas/components/type";
 import ImagePropComp from "@/app/components/Canvas/components/Image/ImagePropComp";
 import ButtonPropComp from "@/app/components/Canvas/components/Button/ButtonPropComp";
@@ -11,6 +11,7 @@ import {Button} from "antd";
 import {useTranslation} from "@/hooks/useTranslation";
 import {ContainerPropCompProp} from "@/app/components/Canvas/components/Container/ContainerPropCompProp";
 import ContainerPropComp from "@/app/components/Canvas/components/Container/ContainerPropComp";
+import {InputPropCompProp} from "@/app/components/Canvas/components/Input/InputPropCompProp";
 
 export default function PropertyPanel() {
 
@@ -62,7 +63,10 @@ export default function PropertyPanel() {
                 case "button":
                     return <ButtonPropComp {...selectedComponent} onChange={handleCompChange}/>
                 case "input":
-                    return <InputPropComp {...selectedComponent} onChange={handleCompChange}/>
+                    return <InputPropComp {...selectedComponent} onChange={(values: InputPropCompProp) => {
+                        dispatch(updateFormData({id: values.id, value: values.value || ""}))
+                        handleCompChange(values)
+                    }}/>
                 case "card":
                     return <CardPropComp {...selectedComponent} onChange={handleCompChange}/>
                 case "container":

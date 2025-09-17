@@ -9,6 +9,7 @@ export interface BaseCompProp {
     id: string;
     type: CompType;
     parentId?: string; //💡 New field for nesting
+    style?: React.CSSProperties;
 }
 
 export type Comp = TextPropCompProp | ImagePropCompProp | ButtonPropCompProp | CardPropCompProp | InputPropCompProp | ContainerPropCompProp;

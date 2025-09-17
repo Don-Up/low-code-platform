@@ -9,6 +9,7 @@ type OnInputChange = {
 };
 
 const InputPropComp: React.FC<InputPropCompProp & OnInputChange> = ({
+                                                                        id,
                                                                         value,
                                                                         placeholder,
                                                                         inputType,
@@ -21,18 +22,19 @@ const InputPropComp: React.FC<InputPropCompProp & OnInputChange> = ({
     const [form] = Form.useForm();
 
     useEffect(() => {
-        form.setFieldsValue({ value, placeholder, inputType, width, disabled, size, allowClear });
+        form.setFieldsValue({value, placeholder, inputType, width, disabled, size, allowClear});
     }, [value, placeholder, inputType, width, disabled, size, allowClear]);
 
     const handleValuesChange = () => {
         const values = form.getFieldsValue() as InputPropCompProp;
         if (onChange) {
-            onChange(values);
+            onChange({...values, id});
         }
     };
 
     return (
         <Form
+            style={{maxWidth: "500px", }}
             form={form}
             layout="vertical"
             onValuesChange={handleValuesChange}
@@ -72,7 +74,7 @@ const InputPropComp: React.FC<InputPropCompProp & OnInputChange> = ({
                 </div>
             </div>
         </Form>
-);
+    );
 };
 
 export default InputPropComp;
