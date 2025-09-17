@@ -125,11 +125,13 @@ export const submitForm = createAsyncThunk<
 >("comp/submitForm", async (_, { getState, dispatch }) => {
     const state = getState();
     const formData = state.comp.present.formData;
+    const token = localStorage.getItem('accessToken'); // Assume token is stored here after login
 
     const response = await fetch("http://localhost:3000/api/submit-form", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Send JWT token
         },
         body: JSON.stringify(formData),
     });
@@ -140,7 +142,6 @@ export const submitForm = createAsyncThunk<
 
     return await response.json();
 });
-
 
 export const { setComponents, addComponent, clearComponents, setSelectComponentId, updateComponent, swapComponent, removeComponent, saveState, loadState, setPreviewMode, updateFormData, clearSubmissionResult } = compSlice.actions;
 export default compSlice.reducer;
