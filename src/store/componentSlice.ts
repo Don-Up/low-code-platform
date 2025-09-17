@@ -1,6 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {Comp} from "@/app/components/Canvas/components/type";
 import {ContainerPropCompProp} from "@/app/components/Canvas/components/Container/ContainerPropCompProp";
+import {AppDispatch, RootState} from "@/store/store";
 
 interface ComponentState {
     components: Comp[];
@@ -8,6 +9,7 @@ interface ComponentState {
     isPreviewMode: boolean;
     formData: {[key: string]: string },
     submissionResult: string | null
+    submissionError: string | null
 }
 
 const initialState: ComponentState = {
@@ -15,7 +17,8 @@ const initialState: ComponentState = {
     selectedComponentId: null,
     isPreviewMode: false,
     formData: {},
-    submissionResult: null
+    submissionResult: null,
+    submissionError: null,
 };
 
 const compSlice = createSlice({
@@ -91,19 +94,53 @@ const compSlice = createSlice({
             state.isPreviewMode = action.payload;
         },
         updateFormData: (state, action: PayloadAction<{ id: string; value: string }>) => {
-            console.log("formData:", state.formData)
             state.formData[action.payload.id] = action.payload.value;
-        },
-        submitForm: (state) => {
-            state.submissionResult = JSON.stringify(state.formData, null, 2);
-            console.log("Form Submitted:", state.formData); // Temporary logging
-            // Future: API call or export
         },
         clearSubmissionResult: (state) => {
             state.submissionResult = null;
+            state.submissionError = null;
         },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(submitForm.pending, (state) => {
+                state.submissionResult = "Submitting...";
+                state.submissionError = null;
+            })
+            .addCase(submitForm.fulfilled, (state, action) => {
+                state.submissionResult = `Form saved successfully. Canvas ID: ${action.payload.canvasId}`;
+                state.submissionError = null;
+            })
+            .addCase(submitForm.rejected, (state, action) => {
+                state.submissionResult = null;
+                state.submissionError = action.error.message || "Submission failed";
+            });
     },
 });
 
-export const { setComponents, addComponent, clearComponents, setSelectComponentId, updateComponent, swapComponent, removeComponent, saveState, loadState, setPreviewMode, updateFormData, submitForm, clearSubmissionResult } = compSlice.actions;
+export const submitForm = createAsyncThunk<
+    { success: boolean; message?: string; canvasId: number; data?: any },
+    void,
+    { dispatch: AppDispatch; state: RootState }
+>("comp/submitForm", async (_, { getState, dispatch }) => {
+    const state = getState();
+    const formData = state.comp.present.formData;
+
+    const response = await fetch("http://localhost:3000/api/submit-form", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+        throw new Error("Network response was not ok");
+    }
+
+    return await response.json();
+});
+
+
+export const { setComponents, addComponent, clearComponents, setSelectComponentId, updateComponent, swapComponent, removeComponent, saveState, loadState, setPreviewMode, updateFormData, clearSubmissionResult } = compSlice.actions;
 export default compSlice.reducer;

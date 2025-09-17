@@ -20,6 +20,7 @@ const ButtonComp: React.FC<ButtonPropCompProp> = ({
     const dispatch = useAppDispatch();
     const formData = useAppSelector(state => state.comp.present.formData)
     const submissionResult = useAppSelector(state => state.comp.present.submissionResult)
+    const submissionError = useAppSelector((state) => state.comp.present.submissionError);
 
     const btnStyle = {
         width: `${width}px`,
@@ -37,13 +38,13 @@ const ButtonComp: React.FC<ButtonPropCompProp> = ({
     }
 
     useEffect(() => {
-        if(submissionResult){
+        if (submissionResult || submissionError) {
             const timer = setTimeout(() => {
                 dispatch(clearSubmissionResult());
             }, 3000);
             return () => clearTimeout(timer);
         }
-    }, [submissionResult, dispatch]);
+    }, [submissionResult, submissionError, dispatch]);
 
     return (
         <div className="cursor-pointer hover:bg-gray-100" onClick={handleClick}>
